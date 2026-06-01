@@ -1,0 +1,39 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: bd_mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root_secure_password_2026
+      MYSQL_DATABASE: motomex_db
+      MYSQL_USER: motomex_user
+      MYSQL_PASSWORD: user_secure_password_2026
+    ports:
+      - "3376:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - motomex_net
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: bd_phpmyadmin
+    restart: always
+    links:
+      - db
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3376
+      PMA_ARBITRARY: 1
+    ports:
+      - "8071:80"
+    networks:
+      - motomex_net
+
+volumes:
+  db_data:
+    driver: local
+
+networks:
+  motomex_net:
+    driver: bridge
