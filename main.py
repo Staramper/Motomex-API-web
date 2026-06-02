@@ -1,28 +1,42 @@
 import os
 from dotenv import load_dotenv
-from fastapi import FastAPI, Depends, Query, HTTPException
+from fastapi import FastAPI, Depends, Query, HTTPException, status, Security
+from fastapi.security.api_key import APIKeyHeader
 from pydantic import BaseModel
 from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, Session
 from typing import Optional
 
-load_dotenv() # Carga las variables de entorno
+# Cargar las variables del .env
+load_dotenv()
 
+# Configuración de BD desde .env
 USER = os.getenv("DB_USER")
 PASSWORD = os.getenv("DB_PASSWORD")
 HOST = os.getenv("DB_HOST")
 PORT = os.getenv("DB_PORT")
 DB_NAME = os.getenv("DB_NAME")
 
-# 1. Configuración de la BD(Apunta al contenedor)
 DATABASE_URL = f"mysql+pymysql://{USER}:{PASSWORD}@{HOST}:{PORT}/{DB_NAME}"
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
-# 2. Inicializar FastAPI
-app = FastAPI(title="API Refaccionaria IA", description="API para consulta de catálogo y captura de leads")
+app = FastAPI(title="API Motomex IA", description="API segura para consulta y leads")
 
-# Dependencia para manejar la sesión de la BD
+# ---------------------------------------------------------
+# CONFIGURACIÓN DE SEGURIDAD (API KEY)
+# ---------------------------------------------------------
+API_KEY = os.getenv("API_KEY")
+api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
+
+def validar_token(api_key: str = Security(api_key_header)):
+    if api_key != API_KEY or not API_KEY:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Acceso denegado: API Key inválida o ausente"
+        )
+
+# Dependencia de la BD
 def get_db():
     db = SessionLocal()
     try:
@@ -30,7 +44,6 @@ def get_db():
     finally:
         db.close()
 
-# 3. Esquema Pydantic para validar los datos que el Chatbot enviará (POST Leads)
 class LeadCreate(BaseModel):
     nombre: Optional[str] = None
     ciudad: Optional[str] = None
@@ -41,16 +54,17 @@ class LeadCreate(BaseModel):
     direccion_envio: Optional[str] = None
     lead_completo: bool = False
 
-# ENDPOINTS (Rutas de la API)
+# ---------------------------------------------------------
+# ENDPOINTS (Protegidos con la dependencia validar_token)
+# ---------------------------------------------------------
 
-@app.get("/productos")
+@app.get("/productos", dependencies=[Depends(validar_token)])
 def buscar_productos(
     modelo: Optional[str] = Query(None),
     categoria: Optional[str] = Query(None),
     ciudad: Optional[str] = Query(None),
     db: Session = Depends(get_db)
 ):
-    """Consulta el catálogo. Permite filtrar por modelo, categoría o ciudad."""
     query = "SELECT * FROM productos WHERE 1=1"
     params = {}
     
@@ -67,18 +81,16 @@ def buscar_productos(
     resultados = db.execute(text(query), params).mappings().all()
     
     if not resultados:
-        return {"mensaje": "No se encontraron productos con esos criterios", "datos": []}
+        return {"mensaje": "No se encontraron productos", "datos": []}
         
     return {"datos": resultados}
 
-@app.post("/leads")
+@app.post("/leads", dependencies=[Depends(validar_token)])
 def registrar_lead(lead: LeadCreate, db: Session = Depends(get_db)):
-    """Guarda un nuevo prospecto capturado por el chatbot."""
     query = """
         INSERT INTO leads (nombre, ciudad, estado, producto_interes, vehiculo, anio_vehiculo, direccion_envio, lead_completo)
         VALUES (:nombre, :ciudad, :estado, :producto_interes, :vehiculo, :anio_vehiculo, :direccion_envio, :lead_completo)
     """
-    
     db.execute(text(query), lead.model_dump())
     db.commit()
     
