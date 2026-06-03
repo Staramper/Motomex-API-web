@@ -1,0 +1,614 @@
+{
+  "name": "Texto prosa a BD",
+  "nodes": [
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"array\",\n  \"items\": {\n    \"type\": \"object\",\n    \"properties\": {\n      \"marca\": { \"type\": \"string\" },\n      \"modelo\": { \"type\": \"string\" },\n      \"categoria\": { \"type\": \"string\" },\n      \"precio\": { \"type\": \"number\" },\n      \"moneda\": { \"type\": \"string\" },\n      \"ciudad\": { \"type\": \"string\" },\n      \"estado\": { \"type\": \"string\" },\n      \"stock\": { \"type\": \"number\" },\n      \"compatibilidad_general\": {\n        \"type\": \"array\",\n        \"items\": { \"type\": \"string\" }\n      },\n      \"especificaciones\": {\n        \"type\": \"object\",\n        \"additionalProperties\": { \"type\": \"string\" }\n      }\n    },\n    \"required\": [\"marca\", \"modelo\", \"categoria\", \"precio\", \"moneda\", \"ciudad\", \"estado\", \"stock\", \"compatibilidad_general\", \"especificaciones\"]\n  }\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        272,
+        208
+      ],
+      "id": "a33b1b42-1608-45a6-a7e0-da78e03aeb27",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "options": {
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        32,
+        208
+      ],
+      "id": "f7196b3a-8960-42fc-93ae-50ff32ac63a6",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Y5vAPiA4ZIIacXfd",
+          "name": "Google Gemini - abrahamadlha@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Proceso de carga de información con texto en prosa a base de datos(ETL)\n### Este flujo sirve para extraer la información de todos los productos en un texto en prosa o no estructurado y formatearlo correctamente para su inserción en la base de datos.",
+        "width": 1024,
+        "color": "#3E3D3D"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -176,
+        -304
+      ],
+      "typeVersion": 1,
+      "id": "8f2809ba-4304-4275-9613-6665f7633060",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "### 1. Inicio del flujo ",
+        "height": 80,
+        "width": 272,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -640,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "fc63ee94-a4c9-4d7a-8210-5a4957ae2515",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -544,
+        0
+      ],
+      "id": "2f939df5-a399-4e6f-86af-4581c06aee7c",
+      "name": "Disparador del flujo"
+    },
+    {
+      "parameters": {
+        "content": "Se eligió este disparador manual debido a que la carga de información se hace por lotes o es un solo uso.",
+        "height": 96,
+        "width": 272,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -640,
+        144
+      ],
+      "typeVersion": 1,
+      "id": "e86b00d5-5e5b-400f-ac88-df1df828a437",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "### 2. Insersión del texto en prosa",
+        "height": 80,
+        "width": 272,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -352,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "cf45468e-a27e-4c3c-8c38-7f5d1328d2de",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "861f5431-a3a0-4b07-94ca-7500718e9e4e",
+              "name": "texto_prosa",
+              "value": "La batería LTH L-47-650 es una batería automotriz recomendada para vehículos compactos y sedanes medianos. Tiene una capacidad de 650 amperes de arranque en frío y voltaje de 12V. Su precio es de $2,450 MXN. Actualmente se encuentra disponible en Monterrey, Nuevo León, con 8 unidades en stock. Es compatible de forma general con modelos como Nissan Versa, Chevrolet Aveo y Volkswagen Jetta, aunque se recomienda validar el año y versión del vehículo antes de confirmar la venta.  Las balatas delanteras Bosch BP-1290 están diseñadas para vehículos tipo sedán de uso urbano. Su precio es de $780 MXN. Están disponibles en Guadalajara, Jalisco, con 15 unidades en stock. Son compatibles de forma general con Nissan Sentra, Renault Fluence y algunos modelos de Nissan Tiida. Incluyen material cerámico de baja generación de ruido y están recomendadas para conducción diaria en ciudad.  El amortiguador Monroe M-3245 es una refacción para suspensión delantera, recomendado para SUVs compactas. Su precio es de $1,350 MXN por pieza. Actualmente se encuentra disponible en Puebla, Puebla, con 6 unidades en stock. Es compatible de forma general con Honda CR-V, Toyota RAV4 y Mazda CX-5, dependiendo del año y versión del vehículo.  El filtro de aceite Fram PH-6607 es una refacción de mantenimiento preventivo para motores de 4 cilindros de cilindrada mediana. Su precio es de $185 MXN. Se encuentra disponible en Ciudad de México, con 42 unidades en stock. Es compatible de forma general con Toyota Corolla, Honda Civic y Nissan Sentra de distintas generaciones.  La banda de distribución Gates T-186 es un componente esencial del sistema de distribución del motor. Su precio es de $620 MXN. Está disponible en Querétaro, Querétaro, con 11 unidades en stock. Es compatible de forma general con Volkswagen Polo, Seat Ibiza y Chevrolet Aveo en versiones con motor de 1.6 litros.  La bomba de agua GMB GWH-780 es una refacción del sistema de refrigeración del motor. Su precio es de $950 MXN. Actualmente se encuentra disponible en León, Guanajuato, con 5 unidades en stock. Es compatible de forma general con Nissan Tsuru, Nissan Sentra B13 y algunos modelos de Nissan Platina con motor GA16.",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -256,
+        0
+      ],
+      "id": "dd658601-6858-4c1d-8601-e0ea85a8e026",
+      "name": "Texto a variable"
+    },
+    {
+      "parameters": {
+        "content": "Usamos el nodo Set para asignar el texto sin formato a una variable para su fácil manejo.\n\nEsto nos ayuda a establecer nuestra carga de información para el modelo de IA, aparte de seguir el principio de responsabilidad separada y no entregarle todo al agente, de la misma forma manteniendo limpio y ordenado el flujo.",
+        "height": 224,
+        "width": 272,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -352,
+        144
+      ],
+      "typeVersion": 1,
+      "id": "d0c9b945-5f68-4106-b675-ae72f0fb6167",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "### 3. Extracción de productos con LLM",
+        "height": 80,
+        "width": 736,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -64,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "be31062b-3fc8-4629-9ce6-44a6c3f294e4",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "Se eligió el Basic LLM Chain porque fuerza un proceso determininado que devuelve exclusivamente el JSON estructurado que necesita la BD.\nUn AI Agent es dinámico y suele agregar texto conversacional extra que terminaría rompiendo la inserción a la BD.",
+        "height": 176,
+        "width": 288,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        384,
+        64
+      ],
+      "typeVersion": 1,
+      "id": "5691f205-4f7b-4b20-8d2c-085436861c86",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "Se eligió el modelo Gemini 2.5 Flash por su velocidad de inferencia superior y su bajo costo, lo que lo hace ideal para escalar un alto volumen de interacciones concurrentes. Además garantiza que la conversión de texto a JSON sea determinista, exacta y libre de alucinaciones.",
+        "height": 208,
+        "width": 256,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -64,
+        352
+      ],
+      "typeVersion": 1,
+      "id": "efb002d5-2be6-4c88-a553-1b69b27d0e0f",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=\"Eres un experto en extracción de datos. Analiza el siguiente texto y extrae la información de cada producto automotriz. Tu única salida debe ser el JSON estructurado, sin texto introductorio ni explicaciones.\nTexto a analizar: {{ $json.texto_prosa }}\"",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": []
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        112,
+        0
+      ],
+      "id": "981bfcb1-2771-46d8-ae38-c5e92a5d3381",
+      "name": "Extracción de productos"
+    },
+    {
+      "parameters": {
+        "content": "El nodo Structured Output Parser se usó para obligar al modelo de IA a devolver un JSON estricto, válido y predecible, eliminando cualquier texto conversacional.",
+        "height": 128,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        208,
+        352
+      ],
+      "typeVersion": 1,
+      "id": "4677a8e7-5836-4492-9bb3-3780558d39d5",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "### 4. Separación de cada producto",
+        "height": 80,
+        "width": 320,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        688,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "237ab5c5-11c8-4561-93a2-f32b9d4dd65c",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "El nodo Split Out Items transformará el texto del LLM en 6 elementos individuales procesables.",
+        "height": 112,
+        "width": 320,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        688,
+        144
+      ],
+      "typeVersion": 1,
+      "id": "43456682-db04-4175-8212-50ecc97b5c97",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "### 5. Inserción de productos en la BD",
+        "height": 80,
+        "width": 320,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1024,
+        -96
+      ],
+      "typeVersion": 1,
+      "id": "089d0071-74fe-4d06-9d19-bdb013052642",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "content": "Se eligió el nodo MySQL porque permite una carga inicial de datos (ETL) directa, rápida y sin intermediarios, reduciendo puntos de falla.\nEsto evita la sobreingeniería de programar un endpoint en la API que solo se usaría una vez, manteniéndola exclusiva para el uso en tiempo real del chatbot.",
+        "height": 176,
+        "width": 320,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1024,
+        144
+      ],
+      "typeVersion": 1,
+      "id": "69d63205-4e31-4e1d-b929-66d56350f627",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "fieldToSplitOut": "output",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitOut",
+      "typeVersion": 1,
+      "position": [
+        800,
+        0
+      ],
+      "id": "3cb2a5cd-7217-4453-9890-7ed10de4c13a",
+      "name": "Separación de cada producto"
+    },
+    {
+      "parameters": {
+        "table": {
+          "__rl": true,
+          "value": "productos",
+          "mode": "list",
+          "cachedResultName": "productos"
+        },
+        "dataMode": "defineBelow",
+        "valuesToSend": {
+          "values": [
+            {
+              "column": "marca",
+              "value": "={{ $json.marca }}"
+            },
+            {
+              "column": "modelo",
+              "value": "={{ $json.modelo }}"
+            },
+            {
+              "column": "categoria",
+              "value": "={{ $json.categoria }}"
+            },
+            {
+              "column": "precio",
+              "value": "={{ $json.precio }}"
+            },
+            {
+              "column": "moneda",
+              "value": "={{ $json.moneda }}"
+            },
+            {
+              "column": "ciudad",
+              "value": "={{ $json.ciudad }}"
+            },
+            {
+              "column": "estado",
+              "value": "={{ $json.estado }}"
+            },
+            {
+              "column": "stock",
+              "value": "={{ $json.stock }}"
+            },
+            {
+              "column": "compatibilidad_general",
+              "value": "={{ JSON.stringify($json.compatibilidad_general) }}"
+            },
+            {
+              "column": "especificaciones",
+              "value": "={{ JSON.stringify($json.especificaciones) }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.mySql",
+      "typeVersion": 2.5,
+      "position": [
+        1136,
+        0
+      ],
+      "id": "0a21700f-cac4-4238-a389-16837935f904",
+      "name": "Meter productos a la BD",
+      "credentials": {
+        "mySql": {
+          "id": "eHyeQHaemCcekFYm",
+          "name": "MySQL - motomex-db"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Extracción de productos": [
+      {
+        "json": {
+          "output": [
+            {
+              "marca": "LTH",
+              "modelo": "L-47-650",
+              "categoria": "batería automotriz",
+              "precio": 2450,
+              "moneda": "MXN",
+              "ciudad": "Monterrey",
+              "estado": "Nuevo León",
+              "stock": 8,
+              "compatibilidad_general": [
+                "Nissan Versa",
+                "Chevrolet Aveo",
+                "Volkswagen Jetta"
+              ],
+              "especificaciones": {
+                "recomendacion": "vehículos compactos y sedanes medianos",
+                "capacidad": "650 amperes de arranque en frío",
+                "voltaje": "12V",
+                "nota_compatibilidad": "validar el año y versión del vehículo antes de confirmar la venta"
+              }
+            },
+            {
+              "marca": "Bosch",
+              "modelo": "BP-1290",
+              "categoria": "balatas delanteras",
+              "precio": 780,
+              "moneda": "MXN",
+              "ciudad": "Guadalajara",
+              "estado": "Jalisco",
+              "stock": 15,
+              "compatibilidad_general": [
+                "Nissan Sentra",
+                "Renault Fluence",
+                "Nissan Tiida"
+              ],
+              "especificaciones": {
+                "diseño_para": "vehículos tipo sedán de uso urbano",
+                "material": "cerámico de baja generación de ruido",
+                "recomendacion": "conducción diaria en ciudad"
+              }
+            },
+            {
+              "marca": "Monroe",
+              "modelo": "M-3245",
+              "categoria": "amortiguador",
+              "precio": 1350,
+              "moneda": "MXN",
+              "ciudad": "Puebla",
+              "estado": "Puebla",
+              "stock": 6,
+              "compatibilidad_general": [
+                "Honda CR-V",
+                "Toyota RAV4",
+                "Mazda CX-5"
+              ],
+              "especificaciones": {
+                "tipo_refaccion": "suspensión delantera",
+                "recomendacion": "SUVs compactas",
+                "nota_compatibilidad": "dependiendo del año y versión del vehículo"
+              }
+            },
+            {
+              "marca": "Fram",
+              "modelo": "PH-6607",
+              "categoria": "filtro de aceite",
+              "precio": 185,
+              "moneda": "MXN",
+              "ciudad": "Ciudad de México",
+              "estado": "Ciudad de México",
+              "stock": 42,
+              "compatibilidad_general": [
+                "Toyota Corolla",
+                "Honda Civic",
+                "Nissan Sentra"
+              ],
+              "especificaciones": {
+                "tipo_mantenimiento": "preventivo",
+                "motores_compatibles": "4 cilindros de cilindrada mediana",
+                "nota_compatibilidad": "de distintas generaciones"
+              }
+            },
+            {
+              "marca": "Gates",
+              "modelo": "T-186",
+              "categoria": "banda de distribución",
+              "precio": 620,
+              "moneda": "MXN",
+              "ciudad": "Querétaro",
+              "estado": "Querétaro",
+              "stock": 11,
+              "compatibilidad_general": [
+                "Volkswagen Polo",
+                "Seat Ibiza",
+                "Chevrolet Aveo"
+              ],
+              "especificaciones": {
+                "componente_sistema": "distribución del motor",
+                "motores_compatibles": "versiones con motor de 1.6 litros"
+              }
+            },
+            {
+              "marca": "GMB",
+              "modelo": "GWH-780",
+              "categoria": "bomba de agua",
+              "precio": 950,
+              "moneda": "MXN",
+              "ciudad": "León",
+              "estado": "Guanajuato",
+              "stock": 5,
+              "compatibilidad_general": [
+                "Nissan Tsuru",
+                "Nissan Sentra B13",
+                "Nissan Platina"
+              ],
+              "especificaciones": {
+                "componente_sistema": "refrigeración del motor",
+                "motores_compatibles": "motor GA16"
+              }
+            }
+          ]
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Extracción de productos",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Extracción de productos",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Disparador del flujo": {
+      "main": [
+        [
+          {
+            "node": "Texto a variable",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Texto a variable": {
+      "main": [
+        [
+          {
+            "node": "Extracción de productos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extracción de productos": {
+      "main": [
+        [
+          {
+            "node": "Separación de cada producto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Separación de cada producto": {
+      "main": [
+        [
+          {
+            "node": "Meter productos a la BD",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "81e446ab-0e0a-4ab4-be88-2446e57fef21",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1684527da30549865dabcb3a4c3b4dabcced4a6b56c4ac5bfdcdd750ab9e7820"
+  },
+  "id": "Z7UoDE6P2Jo6XddX",
+  "tags": [
+    {
+      "updatedAt": "2026-06-01T20:32:53.138Z",
+      "createdAt": "2026-06-01T20:32:53.138Z",
+      "id": "795arnV4YPJmed27",
+      "name": "ETL"
+    },
+    {
+      "updatedAt": "2026-06-01T20:33:12.109Z",
+      "createdAt": "2026-06-01T20:33:12.109Z",
+      "id": "V5xesvf90OuqdHdi",
+      "name": "BD"
+    },
+    {
+      "updatedAt": "2025-10-25T21:06:23.153Z",
+      "createdAt": "2025-10-25T21:06:23.153Z",
+      "id": "oi5jKx9wbaUkalJa",
+      "name": "ia"
+    }
+  ]
+}

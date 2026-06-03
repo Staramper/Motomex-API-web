@@ -1,0 +1,1004 @@
+{
+  "name": "Atención de clientes Motomex",
+  "nodes": [
+    {
+      "parameters": {
+        "contextWindowLength": 15
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -784,
+        288
+      ],
+      "id": "4ce6b1b4-ce60-48a3-98e0-9e49faf94d8b",
+      "name": "Simple Memory",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        -928,
+        192
+      ],
+      "id": "7f7c58f6-99b4-4651-b55a-d101a11fc991",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Y5vAPiA4ZIIacXfd",
+          "name": "Google Gemini - abrahamadlha@gmail.com"
+        }
+      },
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Agente de IA para atención al cliente(Testing)\n### Este flujo se uso para la depuración y el testing en el agente de IA, sus capacidades, sus tareas y su funcionalidad, solo funciona con el chat interno de n8n, esta versión sirve para probar al agente de IA sin conectar a WhatsApp.",
+        "height": 144,
+        "width": 1200,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1248,
+        -192
+      ],
+      "typeVersion": 1,
+      "id": "e6d175e7-0775-4207-80fa-8f9ac99aee04",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Agente de IA para atención al cliente\n### Este flujo pone en marcha un agente de IA para la atención de dudas de los clientes, vía WhatsApp, usando Evolution API.",
+        "height": 144,
+        "width": 1344,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        480,
+        -272
+      ],
+      "typeVersion": 1,
+      "id": "10ce2b65-4179-4e35-afd0-0a787b175e7f",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "### 1. Mensaje del usuario.\nEl usuario manda mensajes al agente de IA.",
+        "height": 96,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1248,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "b8624181-a29a-494f-ad46-08f1d1ec88c8",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.4,
+      "position": [
+        -944,
+        -16
+      ],
+      "id": "0d292b0d-fa3b-4785-bbc5-47b886d4d258",
+      "name": "Chat Interno n8n",
+      "webhookId": "b4e4f8d3-99c0-4e77-abbc-5d20b3dacf90",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "=Eres un asistente experto en ventas de refacciones automotrices por WhatsApp. Tu objetivo es atender clientes, consultar inventario y capturar datos para cerrar ventas o derivar a un asesor humano.\n\nREGLAS ESTRICTAS:\n\nNUNCA inventes precios, disponibilidad, stock ni compatibilidades. SIEMPRE usa la herramienta \"Consultar_Catalogo\" primero.\n\nSi el cliente pregunta por un producto general (ej. \"busco balatas\"), pide únicamente los datos faltantes como modelo, año del vehículo y ciudad para hacer una búsqueda precisa.\n\nCaptura progresivamente los datos del cliente durante la charla (nombre, ciudad, estado, vehículo, año, producto de interés).\n\nDetecta la intención de compra. Si el cliente quiere comprar el producto disponible, pídele su dirección de envío completa.\n\nUna vez que tengas todos los datos o si el cliente requiere validación humana por una pieza dudosa, usa la herramienta \"Registrar_Lead\" para guardar la información.\n\nSi la herramienta \"Consultar_Catalogo\" te devuelve que un producto no existe o no hay resultados, discúlpate amablemente, ofrécele buscar una alternativa similar y pregúntale si desea que un asesor humano revise el caso (si dice que sí, usa \"Registrar_Lead\").\n\nSi intentas ejecutar la herramienta Consultar_Catalogo o Registrar_Lead y recibes un error de conexión, no intentes adivinar la respuesta. Discúlpate con el usuario diciendo exactamente: 'En este momento nuestro sistema de inventario presenta intermitencias técnicas, pero ya he notificado a un asesor para que te atienda personalmente en breve'."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -656,
+        -16
+      ],
+      "id": "5136103f-12a3-4428-b36a-3616180fe6a1",
+      "name": "Bot de ayuda",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "### 2. El bot procesa el texto y responde.\nEl bot interpreta la pregunta e intención del usuario, la procesa y utiliza sus herramientas de consulta para hacer una mejor conversasión.",
+        "width": 288,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -336,
+        -16
+      ],
+      "typeVersion": 1,
+      "id": "e28e80d6-971c-444b-8f8f-ccbfdd587054",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "content": "### Cerebro: Gemini\nUsamos Gemini por su avanzada capacidad de razonamiento lógico y procesamiento de lenguaje natural, lo que le permite entender el contexto de tus conversaciones y generar respuestas mucho más precisas que los modelos tradicionales.",
+        "height": 208,
+        "width": 256,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1248,
+        160
+      ],
+      "id": "77c6524e-0455-4eeb-9b95-c3f3aa7cf849",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "### Memoria\nUsamos Simple Memory para que el bot no pierda el hilo de la conversación, almacenando el historial inmediato para mantener la coherencia y el contexto en cada interacción. Esto evita que el asistente actúe de forma aislada y le permite recordar lo que el usuario dijo hace apenas un instante, haciendo que la charla fluya de manera natural y humana.",
+        "height": 192,
+        "width": 400,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1040,
+        432
+      ],
+      "id": "0cb82fe0-7d81-4cde-b55f-24d877ef55db",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "### Herramienta: Consultar_Catalogo\nEsta herramienta conecta a la base de datos con el bot, permitiendo que la IA busque productos, precios o existencias en tiempo real según la solicitud del cliente. Así, en lugar de respuestas genéricas, el usuario recibe información precisa y actualizada de tu catálogo sin intervención humana.",
+        "height": 224,
+        "width": 288
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -608,
+        432
+      ],
+      "id": "7e9bc15d-1ab9-4de5-8dcb-bd352ddbc223",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "### Herramienta: Registrar_Lead\nLa segunda herramienta se usa  para guardar los datos del prospecto cuando muestre intención de compra o requiera un asesor"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -288,
+        432
+      ],
+      "id": "b01088bf-f8c5-43dd-b554-b766c745fb1e",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "### 1. Mensaje recibido en WhatsApp.",
+        "height": 80,
+        "width": 288,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        272,
+        -80
+      ],
+      "id": "b5dbca28-84df-4727-8f58-b18556be3079",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "content": "Conectamos el nodo webhook para estar escuchando cuando llegue un mensaje y guardar todo el payload para su procesamiento.",
+        "height": 96,
+        "width": 288,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        272,
+        160
+      ],
+      "id": "c15ab423-767c-482f-acf5-864dd64a2448",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "content": "### 2. Limpieza de la información.",
+        "height": 80,
+        "width": 288
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        576,
+        -80
+      ],
+      "id": "02421bac-94df-4bd7-a568-9ebb5f57b060",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "content": "El webhook anterior nos trae demasiada informacion que no se necesita para este proceso, por ende solo mapeamos las propiedades que vamos a utilizar, como el id del cliente, sesión y el mensaje.",
+        "height": 144,
+        "width": 288
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        576,
+        160
+      ],
+      "id": "d6631d2a-da01-4e9e-b956-56bb9417ab63",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "motomex-test",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        368,
+        16
+      ],
+      "id": "21d16044-dc3e-4f5b-836c-98d5996d7464",
+      "name": "Disparador de Evolution API",
+      "webhookId": "190aec26-d58f-4482-9839-500ce9301c7d"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "36969476-a6e3-432f-90ac-df1af3f8411d",
+              "name": "chat_id",
+              "value": "={{ $json.body.data.key.remoteJid }}",
+              "type": "string"
+            },
+            {
+              "id": "73116d93-d70c-4708-8e6c-1e9fec240c45",
+              "name": "instance_name",
+              "value": "={{ $json.body.instance }}",
+              "type": "string"
+            },
+            {
+              "id": "3b1d16e0-5c42-41ee-9706-666974bfcda0",
+              "name": "apikey",
+              "value": "={{ $json.body.apikey }}",
+              "type": "string"
+            },
+            {
+              "id": "824c7904-755c-4591-83aa-1e44efd2013b",
+              "name": "server_url",
+              "value": "={{ $json.body.server_url }}",
+              "type": "string"
+            },
+            {
+              "id": "87ac5f41-67dc-4fbe-84dd-8b0f211ff546",
+              "name": "message",
+              "value": "={{ $json.body.data.message.conversation }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        672,
+        16
+      ],
+      "id": "14a415a1-680b-442e-b516-a1facdd9b050",
+      "name": "Limpieza de datos"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=user_name:{{ $json.chat_id }}\n\nEl usuario envia el siguiente mensaje:\nmessage: {{ $json.message }}",
+        "options": {
+          "systemMessage": "=Eres un asistente experto en ventas de refacciones automotrices por WhatsApp. Tu objetivo es atender clientes, consultar inventario y capturar datos para cerrar ventas o derivar a un asesor humano.\n\nREGLAS ESTRICTAS:\n\nNUNCA inventes precios, disponibilidad, stock ni compatibilidades. SIEMPRE usa la herramienta \"Consultar_Catalogo\" primero.\n\nSi el cliente pregunta por un producto general (ej. \"busco balatas\"), pide únicamente los datos faltantes como modelo, año del vehículo y ciudad para hacer una búsqueda precisa.\n\nCaptura progresivamente los datos del cliente durante la charla (nombre, ciudad, estado, vehículo, año, producto de interés).\n\nDetecta la intención de compra. Si el cliente quiere comprar el producto disponible, pídele su dirección de envío completa.\n\nUna vez que tengas todos los datos o si el cliente requiere validación humana por una pieza dudosa, usa la herramienta \"Registrar_Lead\" para guardar la información.\n\nSi la herramienta \"Consultar_Catalogo\" te devuelve que un producto no existe o no hay resultados, discúlpate amablemente, ofrécele buscar una alternativa similar y pregúntale si desea que un asesor humano revise el caso (si dice que sí, usa \"Registrar_Lead\").\n\nSi intentas ejecutar la herramienta Consultar_Catalogo o Registrar_Lead y recibes un error de conexión, no intentes adivinar la respuesta. Discúlpate con el usuario diciendo exactamente: 'En este momento nuestro sistema de inventario presenta intermitencias técnicas, pero ya he notificado a un asesor para que te atienda personalmente en breve'."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1120,
+        16
+      ],
+      "id": "deabf1e7-80fe-450b-969f-914f17e97ead",
+      "name": "IA Consultor",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "options": {
+          "temperature": 0
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        928,
+        336
+      ],
+      "id": "99a4167b-c9c7-49b5-8f98-69b50a8ded75",
+      "name": "Google Gemini Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Y5vAPiA4ZIIacXfd",
+          "name": "Google Gemini - abrahamadlha@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.chat_id }}",
+        "contextWindowLength": 15
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        1072,
+        368
+      ],
+      "id": "72589f1b-04ee-4efb-afc4-162d3095ca18",
+      "name": "Memoria"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Usa esta herramienta SIEMPRE para buscar refacciones, precios, stock o compatibilidad antes de responder al cliente.",
+        "url": "http://192.168.0.52:9000/productos",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "motomex_token_seguro_2026"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        1232,
+        352
+      ],
+      "id": "139cbf9d-c0ec-4f5e-b57a-42f7647ef69d",
+      "name": "Consultar_Catalogo",
+      "notesInFlow": false
+    },
+    {
+      "parameters": {
+        "toolDescription": "Usa esta herramienta al final de la conversación para guardar los datos del prospecto cuando muestre intención de compra o requiera un asesor",
+        "method": "POST",
+        "url": "http://192.168.0.52:9000/leads",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "motomex_token_seguro_2026"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "nombre",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters0_Value', `El nombre del cliente.`, 'string') }}"
+            },
+            {
+              "name": "ciudad",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters1_Value', `La ciudad del cliente`, 'string') }}"
+            },
+            {
+              "name": "estado",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters2_Value', `El estado de la república del cliente`, 'string') }}"
+            },
+            {
+              "name": "producto_interes",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters3_Value', `La refacción que le interesa al cliente`, 'string') }}"
+            },
+            {
+              "name": "vehiculo",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters4_Value', `Modelo del auto del cliente`, 'string') }}"
+            },
+            {
+              "name": "anio_vehiculo",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters5_Value', `Año del auto del cliente`, 'string') }}"
+            },
+            {
+              "name": "direccion_envio",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters6_Value', `Dirección para entregar si va a comprar`, 'string') }}"
+            },
+            {
+              "name": "lead_completo",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters7_Value', `Devuelve true si quiere comprar o hablar con un humano, false si no`, 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        1408,
+        352
+      ],
+      "id": "7a1c044e-90d2-4c33-b1d0-fdd7a48ff552",
+      "name": "Registrar_Lead"
+    },
+    {
+      "parameters": {
+        "toolDescription": "Usa esta herramienta SIEMPRE para buscar refacciones, precios, stock o compatibilidad antes de responder al cliente.",
+        "url": "http://192.168.0.52:9000/productos",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "motomex_token_seguro_2026"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        -496,
+        272
+      ],
+      "id": "8f88ca58-6a56-4633-8a1c-23d267629fa3",
+      "name": "Consultar_Catalogo1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "toolDescription": "=Usa esta herramienta al final de la conversación para guardar los datos del prospecto cuando muestre intención de compra o requiera un asesor",
+        "method": "POST",
+        "url": "http://192.168.0.52:9000/leads",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-API-Key",
+              "value": "motomex_token_seguro_2026"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "nombre",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters0_Value', `El nombre del cliente.`, 'string') }}"
+            },
+            {
+              "name": "ciudad",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters1_Value', `La ciudad del cliente`, 'string') }}"
+            },
+            {
+              "name": "estado",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters2_Value', `El estado de la república del cliente`, 'string') }}"
+            },
+            {
+              "name": "producto_interes",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters3_Value', `La refacción que le interesa al cliente`, 'string') }}"
+            },
+            {
+              "name": "vehiculo",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters4_Value', `Modelo del auto del cliente`, 'string') }}"
+            },
+            {
+              "name": "anio_vehiculo",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters5_Value', `Año del auto del cliente`, 'string') }}"
+            },
+            {
+              "name": "direccion_envio",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters6_Value', `Dirección para entregar si va a comprar`, 'string') }}"
+            },
+            {
+              "name": "lead_completo",
+              "value": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('parameters7_Value', `Devuelve true si quiere comprar o hablar con un humano, false si no`, 'string') }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.4,
+      "position": [
+        -208,
+        272
+      ],
+      "id": "9c7d987f-e8ca-42fa-ba74-505724852462",
+      "name": "Registrar_Lead1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "### Memoria\nUsamos Simple Memory para que el bot no pierda el hilo de la conversación, almacenando el historial inmediato para mantener la coherencia y el contexto en cada interacción. Esto evita que el asistente actúe de forma aislada y le permite recordar lo que el usuario dijo hace apenas un instante, haciendo que la charla fluya de manera natural y humana.",
+        "height": 288,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        880,
+        496
+      ],
+      "id": "70fe59d2-ebda-4b1b-8940-3712560e8179",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "content": "### Cerebro: Gemini\nUsamos Gemini por su avanzada capacidad de razonamiento lógico y procesamiento de lenguaje natural, lo que le permite entender el contexto de tus conversaciones y generar respuestas mucho más precisas que los modelos tradicionales.",
+        "height": 208,
+        "width": 256,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        608,
+        352
+      ],
+      "id": "0eac7b03-eba9-4427-9cfc-77345f6b30fa",
+      "name": "Sticky Note13"
+    },
+    {
+      "parameters": {
+        "content": "### Herramienta: Consultar_Catalogo\nEsta herramienta conecta a la base de datos con el bot, permitiendo que la IA busque productos, precios o existencias en tiempo real según la solicitud del cliente. Así, en lugar de respuestas genéricas, el usuario recibe información precisa y actualizada de tu catálogo sin intervención humana.",
+        "height": 288,
+        "width": 208,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1136,
+        496
+      ],
+      "id": "9445e03e-ba4f-4238-a2f0-d282a52ec49c",
+      "name": "Sticky Note14"
+    },
+    {
+      "parameters": {
+        "content": "### Herramienta: Registrar_Lead\nLa segunda herramienta se usa  para guardar los datos del prospecto cuando muestre intención de compra o requiera un asesor",
+        "height": 240,
+        "width": 192,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        496
+      ],
+      "id": "58f4a937-d074-4296-a3f4-ca29bee3781f",
+      "name": "Sticky Note15"
+    },
+    {
+      "parameters": {
+        "content": "### 3. Agente de IA para la atención de clientes sobre productos y posibles prospectos de compra",
+        "height": 80,
+        "width": 784,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        880,
+        -80
+      ],
+      "id": "5623c465-b545-4eb6-82ba-08623cea9151",
+      "name": "Sticky Note16"
+    },
+    {
+      "parameters": {
+        "content": "El bot interpreta la pregunta e intención del usuario, la procesa y utiliza sus herramientas de consulta para hacer una mejor conversasión.",
+        "height": 128,
+        "width": 224,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        880,
+        80
+      ],
+      "typeVersion": 1,
+      "id": "cab26d4e-3d5f-4f2c-8217-6556a569c57d",
+      "name": "Sticky Note17"
+    },
+    {
+      "parameters": {
+        "content": "### 4. Respuesta al cliente",
+        "height": 80,
+        "width": 352,
+        "color": "#0E4E4D"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1680,
+        -80
+      ],
+      "id": "257d94fb-a043-444a-80b9-bf0cf548efac",
+      "name": "Sticky Note18"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Limpieza de datos').item.json.server_url }}/message/sendText/{{ $('Limpieza de datos').item.json.instance_name }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('Limpieza de datos').item.json.apikey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Limpieza de datos').item.json.chat_id }}"
+            },
+            {
+              "name": "text",
+              "value": "={{ $json.output }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1824,
+        16
+      ],
+      "id": "0c69b89c-c9c2-418e-9524-354914e98355",
+      "name": "Mandar mensaje al cliente"
+    },
+    {
+      "parameters": {
+        "content": "Enviamos una solicitud post por Evolution API para que pueda contestar al cliente al instante.",
+        "height": 80,
+        "width": 336,
+        "color": "#0E4E4D"
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1696,
+        176
+      ],
+      "id": "4069df88-c34d-4616-bac1-cd84f3827e29",
+      "name": "Sticky Note19"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        1696,
+        528
+      ],
+      "id": "592fcfb8-813d-4d20-83f5-e0333f10e757",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Limpieza de datos').first().json.server_url }}/message/sendText/{{ $('Limpieza de datos').first().json.instance_name }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "={{ $('Limpieza de datos').first().json.apikey }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "number",
+              "value": "={{ $('Limpieza de datos').first().json.chat_id }}"
+            },
+            {
+              "name": "text",
+              "value": "Lo sentimos, algo salió mal; estamos haciendo lo mejor para resolverlo."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1824,
+        384
+      ],
+      "id": "56d3a1f6-0e45-4a07-9fe1-b1fd423838c2",
+      "name": "Mandar mensaje de error"
+    },
+    {
+      "parameters": {
+        "sendTo": "abrahamadlha@gmail.com",
+        "subject": "Error en el Flujo",
+        "message": "=🚨 Alerta Crítica: El Bot de Motomex ha fallado.\n\nEl sistema encontró un error durante una conversación y el flujo se detuvo. El cliente ha recibido el mensaje de disculpa automático, pero se requiere tu revisión.\n\n📌 Detalles técnicos:\n- ID de ejecución: {{ $execution.id }}\n- Nodo donde ocurrió la falla: {{ $json.execution.lastNodeExecuted }}\n- Motivo del error: {{ $json.execution.error.message }}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1936,
+        528
+      ],
+      "id": "a1a7bfa1-053e-4a4a-b1fd-0f64c7cb435c",
+      "name": "Alerta al administrador del fallo",
+      "webhookId": "1230700b-52b2-4ef6-9928-8b1b5931cd12",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "3rtXSFi3S53ofthf",
+          "name": "Gmail - abrahamadlha@gmail.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "### Manejo de Errores",
+        "height": 80,
+        "width": 336,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1696,
+        272
+      ],
+      "id": "ed3cadce-de58-4ae1-8406-73bcc8ac0e96",
+      "name": "Sticky Note20"
+    },
+    {
+      "parameters": {
+        "content": "Este sistema de rescate se activa automáticamente con el Error Trigger si el flujo principal falla, evitando que el cliente se quede en espera. Inmediatamente envía un mensaje de disculpa al usuario por WhatsApp y te notifica por Gmail con los detalles para que puedas solucionarlo.",
+        "height": 112,
+        "width": 560,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1600,
+        704
+      ],
+      "id": "0c8e8e33-0f14-4553-b918-39f677e25783",
+      "name": "Sticky Note21"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "Bot de ayuda",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Bot de ayuda",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Chat Interno n8n": {
+      "main": [
+        [
+          {
+            "node": "Bot de ayuda",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Disparador de Evolution API": {
+      "main": [
+        [
+          {
+            "node": "Limpieza de datos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limpieza de datos": {
+      "main": [
+        [
+          {
+            "node": "IA Consultor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IA Consultor": {
+      "main": [
+        [
+          {
+            "node": "Mandar mensaje al cliente",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mandar mensaje de error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "IA Consultor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Memoria": {
+      "ai_memory": [
+        [
+          {
+            "node": "IA Consultor",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultar_Catalogo": {
+      "ai_tool": [
+        [
+          {
+            "node": "IA Consultor",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar_Lead": {
+      "ai_tool": [
+        [
+          {
+            "node": "IA Consultor",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultar_Catalogo1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Bot de ayuda",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Registrar_Lead1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Bot de ayuda",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Alerta al administrador del fallo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mandar mensaje de error": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "bb8d2772-9409-4465-8bab-82c833674177",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "1684527da30549865dabcb3a4c3b4dabcced4a6b56c4ac5bfdcdd750ab9e7820"
+  },
+  "id": "ROv7AaeyfsJMCtty",
+  "tags": [
+    {
+      "updatedAt": "2025-10-25T21:06:18.022Z",
+      "createdAt": "2025-10-25T21:06:18.022Z",
+      "id": "67FguVZ5c4WBy738",
+      "name": "agente"
+    },
+    {
+      "updatedAt": "2025-11-08T04:00:22.293Z",
+      "createdAt": "2025-11-08T04:00:22.293Z",
+      "id": "HrIiDVLBomBRcYII",
+      "name": "rag"
+    },
+    {
+      "updatedAt": "2025-10-25T21:06:23.153Z",
+      "createdAt": "2025-10-25T21:06:23.153Z",
+      "id": "oi5jKx9wbaUkalJa",
+      "name": "ia"
+    }
+  ]
+}
