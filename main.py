@@ -7,10 +7,10 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.orm import sessionmaker, Session
 from typing import Optional
 
-# Cargar las variables del .env
+# Cargar las variables de entorno
 load_dotenv()
 
-# Configuración de BD desde .env
+# Configuración de BD
 USER = os.getenv("DB_USER")
 PASSWORD = os.getenv("DB_PASSWORD")
 HOST = os.getenv("DB_HOST")
@@ -23,9 +23,7 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 app = FastAPI(title="API Motomex IA", description="API segura para consulta y leads")
 
-# ---------------------------------------------------------
-# CONFIGURACIÓN DE SEGURIDAD (API KEY)
-# ---------------------------------------------------------
+# CONFIGURACIÓN DE LA API KEY
 API_KEY = os.getenv("API_KEY")
 api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
 
@@ -54,9 +52,7 @@ class LeadCreate(BaseModel):
     direccion_envio: Optional[str] = None
     lead_completo: bool = False
 
-# ---------------------------------------------------------
-# ENDPOINTS (Protegidos con la dependencia validar_token)
-# ---------------------------------------------------------
+# ENDPOINTS
 
 @app.get("/productos", dependencies=[Depends(validar_token)])
 def buscar_productos(
